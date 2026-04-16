@@ -9,11 +9,17 @@ Required version:
 containerd.io=1.7.23-1
 ```
 If Docker is not installed, use the following steps:
+
+**Note: The commands below are split into separate steps so you can verify that each one completes before moving on.**
+
+
 ```bash
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
+```
 
+```bash
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
@@ -21,17 +27,29 @@ echo \
 
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
+```
+```bash
 sudo systemctl enable --now docker
+```
 
+```bash
 sudo apt-get update
 sudo apt-get install -y --allow-downgrades containerd.io=1.7.23-1
 sudo apt-mark hold containerd.io
+```
 
+```bash
 sudo systemctl restart containerd
 sudo systemctl restart docker
 ```
 
+SANITY CHECK!!!
+
+```bash
+sudo docker run hello-world
+```
+
+Proceed only after hello-world runs successfully.
 ## Start Jenkins
 
 ### Open a terminal in the repository:
@@ -61,6 +79,22 @@ Username: desire_test
 
 Password: test
 ```
+
+## Create a pull request on these repos
+
+### ROS1
+
+```
+https://github.com/aszpetmanski/ROS1_CI
+```
+
+### ROS2
+
+```
+https://github.com/aszpetmanski/ROS2_CI
+```
+
+
 ## Observe the pipeline
 
 After a Pull Request is accepted (merged), Jenkins should automatically start the configured job for this repository.
